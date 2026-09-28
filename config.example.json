@@ -7,7 +7,6 @@
   "commandPrefix": "t!",
   "ytDlpPath": ".venv/bin/yt-dlp",
   "streamers": ["your_first_channel", "your_second_channel"],
-  "fallbackStreamer": null,
   "encoder": "software",
   "nvencPreset": "p4",
   "nvencGpu": 0,

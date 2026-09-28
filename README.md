@@ -69,8 +69,7 @@ The example config contains the common settings. Restart after editing it.
 
 | Setting | What it changes |
 | --- | --- |
-| `streamers` | Channel names, highest priority first |
-| `fallbackStreamer` | Optional last-choice channel; `null` disables it |
+| `streamers` | Channel names, highest priority first; place a last-choice channel last |
 | `commandPrefix` | Change `t!` to your preferred prefix |
 | `commands` | Rename commands or add aliases |
 | `nowShowingChannelId` | Optional announcement channel |
