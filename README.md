@@ -137,7 +137,7 @@ and local encoding-check commands are in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## AI assistance
 
-Code, tests and documentation for this release were substantially developed with
-AI assistance. I run this on my own personal servers and it appears to be stable and without issue, I had used AI to get this all up for public-use. Contributions and independent code review are welcome.
+AI tools substantially assisted with the code, tests and documentation for this
+release. Contributions and independent review are welcome.
 
 [MIT license](LICENSE) · [Security](SECURITY.md)
