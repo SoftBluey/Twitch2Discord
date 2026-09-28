@@ -1,0 +1,11 @@
+node_modules/
+.venv/
+config.json
+config.*.local.json
+.env
+.env.*
+!.env.example
+*.log
+*.bak
+coverage/
+.DS_Store

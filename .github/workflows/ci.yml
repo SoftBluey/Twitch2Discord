@@ -1,0 +1,48 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm run check
+      - run: npm test
+  media:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg yt-dlp
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run smoke
+      - name: Check generated user and system units
+        run: |
+          node -e "const fs = require('fs'); const {serviceUnit} = require('./scripts/service'); for (const [name, user] of [['user', null], ['system', 'root']]) fs.writeFileSync(process.env.RUNNER_TEMP + '/relay-' + name + '.service', serviceUnit(process.cwd() + '/path with spaces', process.execPath, user));"
+          systemd-analyze verify "$RUNNER_TEMP/relay-user.service" "$RUNNER_TEMP/relay-system.service"
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm audit --package-lock-only

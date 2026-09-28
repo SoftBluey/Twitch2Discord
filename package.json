@@ -1,0 +1,40 @@
+{
+  "name": "twitch2discord",
+  "version": "3.0.0",
+  "description": "Configurable Twitch video relay for Discord voice channels",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "check": "node scripts/check.js",
+    "test": "node --test",
+    "config:check": "node index.js --check-config",
+    "diagnose": "node index.js --diagnose",
+    "smoke": "node scripts/smoke.js",
+    "format": "prettier --write index.js src scripts test",
+    "format:check": "prettier --check index.js src scripts test",
+    "service:install": "node scripts/service.js"
+  },
+  "dependencies": {
+    "@dank074/discord-video-stream": "7.0.0",
+    "@lng2004/discord.js-selfbot-v13": "3.7.2"
+  },
+  "devDependencies": {
+    "prettier": "3.9.9"
+  },
+  "license": "MIT",
+  "overrides": {
+    "node-av": {
+      "werift": {
+        "ip": "npm:neoip@2.1.0"
+      }
+    }
+  },
+  "allowScripts": {
+    "node-av@6.1.1": true,
+    "zeromq@6.5.0": true
+  }
+}
