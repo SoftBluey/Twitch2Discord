@@ -143,8 +143,9 @@ Do not run both relays on the same account at the same time.
    actual name). Note the user, Node path, working directory and any GPU groups.
 2. In the new directory, follow the README install steps and copy
    `config.example.json` to `config.json`. Copy your token and channel IDs from
-   the old private config. Put your chosen streamers in `streamers`, in order,
-   and set `fallbackStreamer` if wanted. Do not copy the old `twitchUrl` or
+   the old private config. Put your chosen streamers in `streamers`, in order
+   from highest to lowest priority, converting old `twitchUrl`/`twitchUrls`
+   values directly into the `streamers` array. Do not copy the old `twitchUrl` or
    `twitchUrls` keys; the new validator rejects them.
 3. Choose the encoder for the deployment: `software` for CPU, `vaapi` for
    supported Intel/AMD GPUs, or `nvenc` for NVIDIA. Transfer any required quality,

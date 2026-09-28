@@ -27,7 +27,6 @@ const DEFAULTS = {
   nowShowingChannelId: null,
   commandPrefix: "t!",
   streamers: [],
-  fallbackStreamer: null,
   encoder: "software",
   vaapiDevice: "/dev/dri/renderD128",
   softwarePreset: "superfast",
@@ -150,13 +149,8 @@ function validateConfig(raw, env = process.env) {
     if (!source) fail(`streamers[${index}] is not a Twitch channel.`);
     return { ...source, priority: index + 1 };
   });
-  if (c.fallbackStreamer !== null) {
-    const fallback = twitchSource(c.fallbackStreamer);
-    if (!fallback) fail("fallbackStreamer must be a Twitch channel or null.");
-    sources.push({ ...fallback, priority: sources.length + 1, fallback: true });
-  }
   if (new Set(sources.map((s) => s.id)).size !== sources.length)
-    fail("streamers and fallbackStreamer must not contain duplicates.");
+    fail("streamers must not contain duplicates.");
   for (const [key, value] of Object.entries(DEFAULTS)) {
     if (typeof value === "boolean" && typeof c[key] !== "boolean")
       fail(`${key} must be true or false.`);

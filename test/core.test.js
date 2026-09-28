@@ -133,19 +133,20 @@ test("system service uses an explicit account and boot target without a user ses
   );
 });
 
-test("configuration derives priority from user order and probes fallback normally", () => {
+test("configuration derives priority entirely from streamers array order", () => {
   const c = config({
-    streamers: ["second", "https://twitch.tv/first"],
-    fallbackStreamer: "backup",
+    streamers: ["second", "https://twitch.tv/first", "backup"],
   });
   assert.deepEqual(
-    c.sources.map((s) => [s.id, s.priority, !!s.fallback]),
+    c.sources.map((s) => [s.id, s.priority]),
     [
-      ["second", 1, false],
-      ["first", 2, false],
-      ["backup", 3, true],
+      ["second", 1],
+      ["first", 2],
+      ["backup", 3],
     ],
   );
+  assert.equal(c.sources.at(-1).id, "backup");
+  assert.equal(c.sources.at(-1).priority, c.sources.length);
   assert.equal(c.encoder, "software");
   assert.equal(c.nowShowingChannelId, null);
 });
@@ -154,7 +155,6 @@ test("configuration rejects typos, duplicate aliases, IDs as numbers, and unsafe
   for (const changes of [
     { streamers: [] },
     { streamers: ["first", "FIRST"] },
-    { fallbackStreamer: "first" },
     { fps: -1 },
     { pollIntervalMs: 1 },
     { watchdogMinimumSpeed: -1 },
@@ -257,15 +257,12 @@ test("votes count current listeners and ignore stale expiry callbacks", () => {
   assert.deepEqual(finished[0][2], { yes: 0, no: 1, eligible: 1 });
 });
 
-test("Twitch distinguishes offline and infrastructure failures, including fallback", async () => {
+test("Twitch distinguishes offline and infrastructure failures", async () => {
   let stderr = "ERROR: first is offline";
   const twitch = new Twitch(config({ probeCacheMs: 0 }), async () => {
     throw { stderr };
   });
-  assert.equal(
-    await twitch.check({ ...twitchSource("first"), fallback: true }),
-    "offline",
-  );
+  assert.equal(await twitch.check(twitchSource("first")), "offline");
   stderr = "HTTP Error 503: unavailable";
   assert.equal(await twitch.check(twitchSource("first")), "unknown");
   twitch.close();

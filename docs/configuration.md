@@ -13,12 +13,12 @@ Use `npm start -- --config /absolute/path/config.json` for a different file.
 | `commandChannelId` | Text channel ID; `null` accepts commands in any server channel |
 | `nowShowingChannelId` | `null`; set a text channel ID to announce stream changes |
 | `streamers` | Required list of 1–30 usernames or Twitch channel URLs, highest priority first |
-| `fallbackStreamer` | `null`; optional last-choice channel, checked normally |
 | `commandPrefix` | `"t!"`; text before a command, such as `!` for `!help`; 1–10 non-space characters |
 | `commands` | An action's names/aliases; see below |
 | `moderatorRoleIds`, `moderatorUserIds` | `[]`; extra moderators, using quoted IDs |
 
-No duplicate streamers are allowed. Owners and members with Manage Server or
+No duplicate streamers are allowed. Streamers are ordered from highest to
+lowest priority; to keep a last-choice channel, place it last in `streamers`. Owners and members with Manage Server or
 Administrator permission are always moderators. Announcements indicate encoder
 activity, not confirmation that a viewer received the stream.
 
@@ -108,5 +108,5 @@ service can restart it. The relay never configures routing, firewall or VPNs.
 Polling intervals, lookup timeouts and watchdog windows must be at least 1000 ms.
 With `commandChannelId: null`, automatic vote prompts use the most recent command
 channel; set an explicit channel if you want them to work before anyone sends a command.
-The fallback does not trigger a vote to interrupt a custom stream. Custom streams
+Custom streams
 that are confirmed offline return to the priority list even with `returnToPriority: "stay"`.

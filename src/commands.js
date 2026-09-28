@@ -271,7 +271,7 @@ class Commands {
         states
           .map(
             ({ source, state }) =>
-              `${source.priority}. ${source.name}: ${state}${source.fallback ? " (fallback)" : ""}`,
+              `${source.priority}. ${source.name}: ${state}`,
           )
           .join("\n"),
       );
@@ -330,11 +330,7 @@ class Commands {
       );
     if (command === "priority")
       return reply(
-        this.config.sources
-          .map(
-            (s) => `${s.priority}. ${s.name}${s.fallback ? " (fallback)" : ""}`,
-          )
-          .join("\n"),
+        this.config.sources.map((s) => `${s.priority}. ${s.name}`).join("\n"),
       );
     if (command === "check") return this.check(message.channel);
     if (command === "suggest") return this.suggest(message, argument);
@@ -426,7 +422,7 @@ class Commands {
       )?.source;
       if (!top || top.id === this.relay.current?.id) return;
       if (this.relay.override) {
-        if (top.fallback || this.config.returnToPriority === "stay") return;
+        if (this.config.returnToPriority === "stay") return;
         if (this.config.returnToPriority === "automatic") {
           this.relay.change(null, "priority stream online");
           return;
